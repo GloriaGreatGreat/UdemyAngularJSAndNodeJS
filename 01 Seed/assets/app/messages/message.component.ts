@@ -22,7 +22,7 @@ import {MessageService} from "./message.service";
 
 export class MessageComponent {
     @Input() message: Message;
-    @Output() editClicked = new EventEmitter<string>();
+    //@Output() editClicked = new EventEmitter<string>();
 
     color = 'red';
 
@@ -31,10 +31,17 @@ export class MessageComponent {
     }
 
     onEdit(){
-        this.editClicked.emit('A new value');
+        //this.editClicked.emit('A new value');
+        this.messageService.editMessages(this.message);
     }
 
     onDelete(){
-        this.messageService.deleteMessage(this.message);
+        this.messageService.deleteMessage(this.message)
+            .subscribe(
+                result => console.log(result)
+            );
+    }
+    belongsToUser(){
+        return localStorage.getItem('userId') == this.message.userId;
     }
 }
